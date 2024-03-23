@@ -1,0 +1,36 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+- ../../base
+
+configMapGenerator:
+- files:
+  - config.yaml
+  name: configmap
+  behavior: merge
+
+patches: 
+- patch: |-
+    - op: replace
+      path: /spec/ports/0/port
+      value: 8081
+  target:
+    kind: Service
+
+- patch: |-
+    - op: replace
+      path: /spec/template/spec/containers/0/livenessProbe/httpGet/port
+      value: 8081
+    - op: replace
+      path: /spec/template/spec/containers/0/ports/0/containerPort
+      value: 8081
+    - op: replace
+      path: /spec/template/spec/containers/0/readinessProbe/httpGet/port
+      value: 8081
+  target:
+    kind: Deployment
+    
+images:
+- name: main
+  newName: todo

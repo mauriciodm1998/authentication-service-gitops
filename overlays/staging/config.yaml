@@ -1,0 +1,4 @@
+server:
+  port: 8081
+token:
+  key: "uk5RAK5cumPZZ3jIuKGMn019wXYz4kad"
